@@ -107,7 +107,8 @@
                includeantruntime="false">
             <src path="${source.absolute.dir}" />
             <src path="${gen.absolute.dir}" />
-
+            <compilerarg value="-processorpath" />
+            <compilerarg value="${extensible.libs.classpath}/androidannotations-2.0.2.jar"/>
             <!-- test src -->
             <src path="${tested.project.test.absolute.dir}"/>
             <classpath>

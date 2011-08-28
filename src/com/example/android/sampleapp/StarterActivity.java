@@ -18,11 +18,12 @@ public class StarterActivity extends Activity {
     @ViewById(R.id.current_time) // Resource ID and variable do not match
     TextView currentTimeText;
 
-    @Inject // Regular roboguice injection
+    @Inject // Regular RoboGuice injection
     private CurrentTime currentTimeManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // DO NOT setContentView(layout.home) as we normally would! androidannotations does this.
         super.onCreate(savedInstanceState);
         title.setText("Hello World");
         currentTimeText.setText(String.valueOf(currentTimeManager.currentTimeMillis()));
