@@ -13,7 +13,7 @@ import static com.example.android.sampleapp.test.support.Expect.expect;
 public class StarterActivityTestWithGreatExpectations {
     @Test
     public void shouldHaveATitle() throws FileNotFoundException {
-        final StarterActivity activity = new StarterActivity();
+        final StarterActivity activity = new StarterActivity_();
         activity.onCreate(null);
         TextView title = (TextView) activity.findViewById(R.id.title);
         expect(title).not.toBeNull();

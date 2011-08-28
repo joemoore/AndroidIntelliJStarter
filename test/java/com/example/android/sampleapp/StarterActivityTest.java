@@ -9,9 +9,10 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class StarterActivityTest {
+
     @Test
     public void shouldHaveATitle() {
-        final StarterActivity activity = new StarterActivity();
+        final StarterActivity activity = new StarterActivity_();
         activity.onCreate(null);
         TextView title = (TextView) activity.findViewById(R.id.title);
         assertEquals("Hello World", title.getText());

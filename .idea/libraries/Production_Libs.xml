@@ -36,6 +36,7 @@
       <root url="jar://$PROJECT_DIR$/libs-src/jackson-src-1.8.4-min.zip!/jackson-src-1.8.4/src/perf" />
       <root url="jar://$PROJECT_DIR$/libs-src/jackson-src-1.8.4-min.zip!/jackson-src-1.8.4/src/mapper/java" />
       <root url="jar://$PROJECT_DIR$/libs-src/jackson-src-1.8.4-min.zip!/jackson-src-1.8.4/src/test" />
+      <root url="intellijad://intellijad" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/libs/main" recursive="false" />

@@ -1,27 +1,30 @@
 package com.example.android.sampleapp;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 import com.example.android.sampleapp.util.CurrentTime;
 import com.google.inject.Inject;
-import roboguice.activity.RoboActivity;
-import roboguice.inject.InjectView;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.RoboGuice;
+import com.googlecode.androidannotations.annotations.ViewById;
 
-public class StarterActivity extends RoboActivity {
-    @InjectView(R.id.title)
+@EActivity(R.layout.home)
+@RoboGuice
+public class StarterActivity extends Activity {
+    @ViewById // Resource ID and variable match
     TextView title;
 
-    @InjectView(R.id.current_time)
+    @ViewById(R.id.current_time) // Resource ID and variable do not match
     TextView currentTimeText;
 
-    @Inject
-    private CurrentTime currentTime;
+    @Inject // Regular roboguice injection
+    private CurrentTime currentTimeManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
         title.setText("Hello World");
-        currentTimeText.setText(String.valueOf(currentTime.currentTimeMillis()));
+        currentTimeText.setText(String.valueOf(currentTimeManager.currentTimeMillis()));
     }
 }

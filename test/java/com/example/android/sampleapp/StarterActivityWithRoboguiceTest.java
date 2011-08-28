@@ -18,7 +18,7 @@ public class StarterActivityWithRoboguiceTest {
     @Test
     public void testCurrentTimeIsInjected() throws Exception {
         ((FakeCurrentTime) currentTime).setCurrentTime(12345L);
-        final StarterActivity activity = new StarterActivity();
+        final StarterActivity activity = new StarterActivity_();
         activity.onCreate(null);
         TextView title = (TextView) activity.findViewById(R.id.current_time);
         assertEquals("12345", title.getText());
