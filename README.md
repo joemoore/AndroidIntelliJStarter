@@ -22,22 +22,30 @@ things as you go.
 - Robolectric will live in submodules/robolectric
 - You have java, ruby and git installed
 
-# Power User Instructions
+# Summary Instructions (for Power Users)
 **Don't open IntelliJ yet.**
 
 So you know what you're doing, eh? Let's do this thing!
 
 - **Don't open IntelliJ yet.** Did you already launch it? Close it.
-- Install android to ~/android-sdk-mac_x86/
+- Install Android to ~/android-sdk-mac_x86/
 - Install SDKs -- this project assumes SDK 10 with Google APIs (2.3.3). You change this later.
--  Clone and reconfigure this project as YourProject by running:
+- Create a local git repo for your new project, or create one on GitHub and clone it. http://help.github.com/create-a-repo/
+- Optionally, fork the robolectric repo on GitHub if you wish to use a fork for your project to make it easy to contribute changes back to robolectric.
+  We recommend that you fork robolectric.
+  Go to https://github.com/pivotal/robolectric and click the "Fork" button.
+- Clone this project to get the code, then add all of its code to your new project's repo by running:
 
-        git clone git://github.com/pivotal/AndroidIntelliJStarter YourProject # or your fork
-        cd YourProject
-        ./script/project_setup YourProject #or ruby script/project_setup
+        git clone git://github.com/pivotal/AndroidIntelliJStarter starter_tmp
+        cd starter_tmp
+        ./script/project_setup YourProjectName path_to_your_project_repo #or ruby script/project_setup ...
+
+        # This script will prompt you for a package name and a robolectric repo, both are optional.
+        # Default package name: com.example.android.sampleapp
+        # Default robolectric repo is the read-only offical robolectric repo: git://github.com/pivotal/robolectric.git
 
 		# Run tests: 
-    	(cd submodules/robolectric && ant clean test) && ant clean test
+    	cd path_to_your_project_repo && (cd submodules/robolectric && ant clean findAndroidUnix && ant test) && ant clean test
 
 - **Open YourProject in IntelliJ 10.5 or higher**.
 - Import IntelliJ Settings: File => Import Settings => YourProject/support/IntellijSettings.jar. 
@@ -48,7 +56,7 @@ Notes:
 - "Import Settings" should have fixed the global Project SDKs and Module SDKs. Fix them if they are still broken.
 See "4. IntelliJ: Some Manual Configuration" below.
 - Robolectric's unit test suite requires SDK 10 with Google APIs (2.3.3). If you do not install this SDK you cannot run Robolectric's tests.
-- ***We recommend that you fork robolectric. See "3. Robolectric" below.***
+- Once you are done, you can delete the starter_tmp directory.
 
 In IntelliJ, Run Unit Tests, Robolectric Unit Tests, and launch StarterApp and make sure they work.
 
@@ -94,111 +102,42 @@ Make at least one Virtual Device (emulator) for the SDK(s) you installed above.
 Note: This project assumes you have SDK 10 with Google APIs (2.3.3) installed. You can change this in 
 `build.properties`.
 
-## 2. New Project based on AndroidIntelliJStarter
+## 2. Setting Up Your New Project's Repo
 **Don't open IntelliJ yet.**
 
-You will likely fork and rename this repository on Github. 
-If you clone this repo be sure to use the *read-only* url to avoid accidentally making 
-changes to this template project.
+Before you can start, you have to have a git repo for your new project on your machine.
 
-    git clone git://github.com/pivotal/AndroidIntelliJStarter YourProject # or your fork
-    cd YourProject
+If you are using GitHub, to create a new repo for your project, create it on GitHub and clone it to your local machine.
+
+If you are NOT using GitHub, just create a repo on your local machine for your project (i.e. `git init`).
+
+Optionally, if you are using `git pair` on your project, create a .pairs file in your new project's repo and run `git pair`.
+
+Finally, clone `pivotal/AndroidIntelliJStarter` be sure to use the *read-only* URI to avoid accidentally pushing
+changes to it.
+
+    git clone git://github.com/pivotal/AndroidIntelliJStarter starter_tmp
 
 ### Project Setup Script
-Many files and file contents need to change from AndroidIntelliJStarter to YourProject. We have a 
-script for this:
+`project_setup` will rename the files and file contents that need to be changed from
+AndroidIntelliJStarter to YourProject and copy/commit all of the files into your project's repo.
 
-    pivotal$ ./script/project_setup YourProject
+    cd starter_tmp
+    ./script/project_setup YourProject path_to_your_project_repo
 
-Follow the instructions. The output will look like this:
-	
-	pivotal$ ./script/project_setup YourProject
-	Searching: AndroidIntelliJStarter.iml,.idea/.name, [snip... lots of files here]
-	>>> Replaced 'AndroidIntelliJStarter' in .idea/.name with 'YourProject'
-	>>> Replaced 'AndroidIntelliJStarter' in .idea/modules.xml with 'YourProject'
-	>>> Replaced 'AndroidIntelliJStarter' in .idea/runConfigurations/StarterApp.xml with 'YourProject'
-	>>> Replaced 'AndroidIntelliJStarter' in .idea/runConfigurations/Unit_Tests.xml with 'YourProject'
-	>>> Renamed 'AndroidIntelliJStarter.iml' to 'YourProject.iml'
+This script will prompt you for a package name and a robolectric repo, both are optional.
 
-	!!! Do you want to create a new git repository? 
-	!!! Type 'yes' to back up your .git directory and create a new git repository
-	> yes
-	!!! Moving .git to .git.bak. Delete this if you don't want it.
-	!!! Initializing a new git repository!
-	Initialized empty Git repository in /Users/pivotal/workspace/YourProject/.git/
-	
-	[snip... lots of git output here.]
-	
-	pivotal$
+- The default package name is `com.example.android.sampleapp`.
+- Robolectric is a git submodule in this project. By default, submodules/robolectric is a non-pushable clone of
+http://github.com/pivotal/robolectric (HEAD). You can specify your own fork at the prompt.
 
-### New Git Repository Script
-Notice the the output from above `script/project_setup`: 
-
-    !!! Do you want to create a new git repository? 
-    !!! Type 'yes' to back up your .git directory and create a new git repository
-    > 
-
-You can rerun this command if need to: 
-
-    ./script/init_git # or ruby script/init_git 
-
-You will still need to push this to some external repository URI.
-
-### Update Android
-Run this:
-
-    android update project -p .
-
-*If this fails with the following error* then either install the SDK referenced
-in `build.properties` or change the "target" within that file appropriately.
-
-    Error: The project either has no target set or the target is invalid.
-    Please provide a --target to the 'android update' command.
-
-If this changes `build.xml` then check it out again: 
-
-	    git checkout build.xml 
-
-## 3. Robolectric
-**Don't open IntelliJ yet.**
-
-Robolectric is a git submodule in this project. By default, submodules/robolectric is a non-pushable clone of
-http://github.com/pivotal/robolectric (HEAD). If you want to fork robolectric 
-(recommended) skip to *Forking Robolectric* below.
+We recommend that you fork robolectric for your project. For details on how to set up your fork
+to easily sync with pivotal/robolectric, see "Open Source Robolectric" below.
 
 Note that Robolectric unit test require SDK v10 (2.3.3) with Google APIs. If you do not install this SDK 
 then you will not be able to run Robolectric's own test suite.
 
-### Initializing Robolectric (HEAD by default)
-    git submodule update --init
-    (cd submodules/robolectric && git checkout master)
-    (cd submodules/robolectric && ant clean test) # make sure it runs
-
-### Forking Robolectric (Recommended)
-We recommend that you fork robolectric for your project. For details on how to set up your fork 
-to easily sync with pivotal/robolectric, see "Open Source Robolectric" below.
-
-.gitmodules -- delete the '[submodule "submodules/robolectric"]' section if present.
-
-.git/config -- delete the '[submodule "robolectric"]' section if present.
-
-Clean up git and directories
-
-    git rm --cached submodules/robolectric
-    rm -rf submodules
-
-After forking robolectric on Github, add a submodule that points to your robolectric repository:
-
-    git submodule add ***YOUR-GIT-REPOSITORY-URI-HERE*** submodules/robolectric
-    git submodule init
-    (cd submodules/robolectric && ant clean test)
-
-Also see *Open Source Robolectric* below.
-
-Did you come here from the *Power User Instructions?* You might want to go back and 
-pick up where you left off.
-
-## 4. IntelliJ: Settings, Libraries, and SDKs
+## 3. IntelliJ: Settings, Libraries, and SDKs
 **Open YourProject in IntelliJ 10.5 or higher.**
 
 ### Import IntellijSettings.jar 
@@ -307,7 +246,6 @@ You can add custom matchers for great-expectations. We are particularly excited 
 3. Regenerate `Expect.java` by running "Add custom great-expectation Matchers by Regenerating Expect.java"
 or execute the `RunnableExpectGenerator.main()` yourself.
 
-
 ## Lots of Jars
 We have added many handy Jars, such as apache commons, google's Guava, the Jackson JSON parsing libraries,
 and more. Check them out in `libs/main/` and `libs/test`-- keep them or delete them.
@@ -317,11 +255,14 @@ These Ruby scripts should make your life easier. Feel free to edit them. They as
 lives in `/usr/bin/ruby` so you might need to edit their `#!/usr/bin/ruby` if yours is different. Alternatively 
 these scripts can be run with ruby explicitly: `ruby script/[the script]`.
 
+Be sure to check out "Project Setup Script", above, for more details on many of these scripts.
+
 - `script/gp` -- "Git Pull" script. This pulls and rebases your project and robolectric.
 - `script/gpp` -- "Git Pull Push" script. Same as script/gp but also runs all tests in robolectric.
 and your project. If they pass it will `git push`.
 - `script/project_setup [YourProject]` -- changes this project from being configured for 
 AndroidIntelliJStarter to YourProject, including a creating a new local git repo if desired.
+- `script/set_package` -- Change the Java package from the default to the provided package name.
 - `script/init_git_repo` -- create a new local git repository. Existing `.git` directory safely moved to `.git.bak`.
 
 ## ant
@@ -367,3 +308,24 @@ Assuming you forked as detailed above, make a pull request as your client user: 
 
 The pull request can be handled by someone with commit right to robolectric, maybe even you!
 See "Managing Pull Requests" at http://help.github.com/send-pull-requests/.
+
+### Changing from using the default Robolectric to using your own fork
+If you started with the default (non-pushable submodule) robolectric, you can change your mind later and set up your
+project to use your own fork later by following these instructions.
+
+.gitmodules -- delete the '[submodule "submodules/robolectric"]' section if present.
+
+.git/config -- delete the '[submodule "robolectric"]' section if present.
+
+Clean up git and directories
+
+    git rm --cached submodules/robolectric
+    rm -rf submodules
+
+After forking robolectric on Github, add a submodule that points to your robolectric repository:
+
+    git submodule add ***YOUR-GIT-REPOSITORY-URI-HERE*** submodules/robolectric
+    git submodule init
+    (cd submodules/robolectric && ant clean test)
+
+Also see *Open Source Robolectric*.
